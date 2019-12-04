@@ -1,7 +1,5 @@
 package day1
 
-import java.io.File
-
 fun main() {
     println(sumAllFuelMasses(readModulesMasses(FILE_NAME)))
 }
