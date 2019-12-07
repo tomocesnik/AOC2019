@@ -6,7 +6,7 @@ enum class OpCode(val code: Int) {
             progCounter: Int,
             program: MutableList<Int>,
             parameterModes: List<ParameterMode>,
-            inputs: List<Int>,
+            inputs: MutableList<Int>,
             outputs: MutableList<Int>
         ) =
             mathOp(progCounter, program, parameterModes) { a, b -> a + b }
@@ -16,7 +16,7 @@ enum class OpCode(val code: Int) {
             progCounter: Int,
             program: MutableList<Int>,
             parameterModes: List<ParameterMode>,
-            inputs: List<Int>,
+            inputs: MutableList<Int>,
             outputs: MutableList<Int>
         ) =
             mathOp(progCounter, program, parameterModes) { a, b -> a * b }
@@ -26,11 +26,13 @@ enum class OpCode(val code: Int) {
             progCounter: Int,
             program: MutableList<Int>,
             parameterModes: List<ParameterMode>,
-            inputs: List<Int>,
+            inputs: MutableList<Int>,
             outputs: MutableList<Int>
-        ): Int {
-            // to support more inputs, would make sense to remove the first one from the list
-            program[program[progCounter + 1]] = inputs[0]
+        ): Int? {
+            if (inputs.isEmpty()) {
+                return null
+            }
+            program[program[progCounter + 1]] = inputs.removeAt(0)
             return progCounter + 2
         }
     },
@@ -39,7 +41,7 @@ enum class OpCode(val code: Int) {
             progCounter: Int,
             program: MutableList<Int>,
             parameterModes: List<ParameterMode>,
-            inputs: List<Int>,
+            inputs: MutableList<Int>,
             outputs: MutableList<Int>
         ): Int {
             outputs.add(parameterModes[0].getData(program[progCounter + 1], program))
@@ -51,7 +53,7 @@ enum class OpCode(val code: Int) {
             progCounter: Int,
             program: MutableList<Int>,
             parameterModes: List<ParameterMode>,
-            inputs: List<Int>,
+            inputs: MutableList<Int>,
             outputs: MutableList<Int>
         ): Int {
             if (parameterModes[0].getData(program[progCounter + 1], program) != 0) {
@@ -65,7 +67,7 @@ enum class OpCode(val code: Int) {
             progCounter: Int,
             program: MutableList<Int>,
             parameterModes: List<ParameterMode>,
-            inputs: List<Int>,
+            inputs: MutableList<Int>,
             outputs: MutableList<Int>
         ): Int {
             if (parameterModes[0].getData(program[progCounter + 1], program) == 0) {
@@ -79,7 +81,7 @@ enum class OpCode(val code: Int) {
             progCounter: Int,
             program: MutableList<Int>,
             parameterModes: List<ParameterMode>,
-            inputs: List<Int>,
+            inputs: MutableList<Int>,
             outputs: MutableList<Int>
         ): Int {
             val cmp = if (parameterModes[0].getData(program[progCounter + 1], program)
@@ -95,7 +97,7 @@ enum class OpCode(val code: Int) {
             progCounter: Int,
             program: MutableList<Int>,
             parameterModes: List<ParameterMode>,
-            inputs: List<Int>,
+            inputs: MutableList<Int>,
             outputs: MutableList<Int>
         ): Int {
             val cmp = if (parameterModes[0].getData(program[progCounter + 1], program)
@@ -111,7 +113,7 @@ enum class OpCode(val code: Int) {
             progCounter: Int,
             program: MutableList<Int>,
             parameterModes: List<ParameterMode>,
-            inputs: List<Int>,
+            inputs: MutableList<Int>,
             outputs: MutableList<Int>
         ) = program.size
     };
@@ -120,9 +122,9 @@ enum class OpCode(val code: Int) {
         progCounter: Int,
         program: MutableList<Int>,
         parameterModes: List<ParameterMode>,
-        inputs: List<Int>,
+        inputs: MutableList<Int>,
         outputs: MutableList<Int>
-    ): Int
+    ): Int?
 
     fun mathOp(
         progCounter: Int,

@@ -8,6 +8,8 @@ fun main() {
     println(executeProgram(readProgram(FILE_NAME), 12, 2))
 }
 
+fun readProgram(fileName: String) = File(fileName).readText().split(",").map { it.trim().toInt() }
+
 fun executeProgram(program: List<Int>, param1: Int, param2: Int): Int {
     val rProg = replaceProgramFirstParams(program, param1, param2)
     var progCounter = 0
@@ -17,8 +19,6 @@ fun executeProgram(program: List<Int>, param1: Int, param2: Int): Int {
     }
     return rProg[0]
 }
-
-fun readProgram(fileName: String) = File(fileName).readText().split(",").map { it.trim().toInt() }
 
 fun replaceProgramFirstParams(program: List<Int>, param1: Int, param2: Int): MutableList<Int> {
     val newProg = program.toMutableList()
