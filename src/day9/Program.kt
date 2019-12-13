@@ -8,7 +8,7 @@ class Program(progCode: List<String>) {
     val halted: Boolean
         get() = procState.halted
 
-    fun execute(inputs: List<String>): List<String> {
+    fun execute(inputs: List<String> = emptyList()): List<String> {
         var progInAndOut = ProgInAndOut(inputs)
         while (!halted) {
             val (opCode, parameterModes) = getOpCode(procState.getValueAtProcCounter()) ?: break
